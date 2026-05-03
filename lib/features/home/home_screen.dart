@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
-import 'package:tasky_app/core/components/models/task_model.dart';
+import 'package:tasky_app/core/models/task_model.dart';
 import 'package:tasky_app/features/add_tasks/add_task_screen.dart';
 import 'package:tasky_app/features/home/components/achieved_tasks_widget.dart';
 import 'package:tasky_app/features/home/components/high_priority_tasks_widget.dart';
@@ -182,14 +183,14 @@ class _HomeScreenState extends State<HomeScreen> {
       _calculatePercentage();
     });
     final updatedTasks = task.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString('tasks', jsonEncode(updatedTasks));
+    await PreferenceManger().setString(StorageKey.tasks, jsonEncode(updatedTasks));
   }
 
   void _loadUserName() async {
     if (!mounted) return;
     setState(() {
-      userName = PreferenceManger().getString('username');
-      userImagePath = PreferenceManger().getString('user_image');
+      userName = PreferenceManger().getString(StorageKey.userName);
+      userImagePath = PreferenceManger().getString(StorageKey.userImage);
     });
   }
 
@@ -198,7 +199,7 @@ class _HomeScreenState extends State<HomeScreen> {
       isLoading = true;
     });
     if (!mounted) return;
-    final finalTask = PreferenceManger().getString('tasks');
+    final finalTask = PreferenceManger().getString(StorageKey.tasks);
 
     if (finalTask == null) {
       setState(() {
@@ -234,6 +235,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _calculatePercentage();
     });
     final updatedTasks = task.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString('tasks', jsonEncode(updatedTasks));
+    await PreferenceManger().setString(StorageKey.tasks, jsonEncode(updatedTasks));
   }
 }
