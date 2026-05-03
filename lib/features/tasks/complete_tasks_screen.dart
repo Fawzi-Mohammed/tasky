@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/models/task_model.dart';
 import 'package:tasky_app/core/components/task_list_widget.dart';
@@ -42,15 +43,17 @@ class _CompleteTasksScreenState extends State<CompleteTasksScreen> {
                     child: CircularProgressIndicator(color: Color(0xFF15B86C)),
                   )
                 : TaskListWidget(
-                  onEdit: () => _loadTasks(),
-                  onDelete: (id) => _deleteTask(id),
+                    onEdit: () => _loadTasks(),
+                    onDelete: (id) => _deleteTask(id),
                     tasks: completedTasks,
                     onTap: (bool? isDone, int? index) async {
                       setState(() {
                         completedTasks[index!].isDone = isDone ?? false;
                       });
 
-                      final allData = PreferenceManger().getString('tasks');
+                      final allData = PreferenceManger().getString(
+                        StorageKey.tasks,
+                      );
                       if (allData != null) {
                         List<TaskModel> allDataList =
                             (jsonDecode(allData) as List)
@@ -62,7 +65,7 @@ class _CompleteTasksScreenState extends State<CompleteTasksScreen> {
 
                         allDataList[newIndex] = completedTasks[index!];
                         await PreferenceManger().setString(
-                          'tasks',
+                          StorageKey.tasks,
                           jsonEncode(allDataList),
                         );
                         _loadTasks();
@@ -81,7 +84,7 @@ class _CompleteTasksScreenState extends State<CompleteTasksScreen> {
       isLoading = true;
     });
     if (!mounted) return;
-    final finalTask = PreferenceManger().getString('tasks');
+    final finalTask = PreferenceManger().getString(StorageKey.tasks);
 
     if (finalTask == null) {
       setState(() {
@@ -101,9 +104,10 @@ class _CompleteTasksScreenState extends State<CompleteTasksScreen> {
       isLoading = false;
     });
   }
-   Future<void> _deleteTask(int? id) async {
+
+  Future<void> _deleteTask(int? id) async {
     if (id == null) return;
-    final finalTask = PreferenceManger().getString('tasks');
+    final finalTask = PreferenceManger().getString(StorageKey.tasks);
     if (finalTask == null) {
       setState(() {
         completedTasks = [];
@@ -118,8 +122,10 @@ class _CompleteTasksScreenState extends State<CompleteTasksScreen> {
         .toList();
     tasks.removeWhere((task) => task.id == id);
     final updatedTasks = tasks.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString('tasks', jsonEncode(updatedTasks));
+    await PreferenceManger().setString(
+      StorageKey.tasks,
+      jsonEncode(updatedTasks),
+    );
     _loadTasks();
   }
-
 }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
@@ -155,9 +156,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Divider(),
                 ListTile(
                   onTap: () async {
-                    await PreferenceManger().remove('username');
-                    await PreferenceManger().remove('motivation_quote');
-                    await PreferenceManger().remove('tasks');
+                    await PreferenceManger().remove(StorageKey.userName);
+                    await PreferenceManger().remove(StorageKey.motivationQuote);
+                    await PreferenceManger().remove(StorageKey.tasks);
                     if (!context.mounted) return;
                     Navigator.pushAndRemoveUntil(
                       context,
@@ -186,11 +187,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _loadData() async {
     setState(() {
-      userName = PreferenceManger().getString('username') ?? '';
+      userName = PreferenceManger().getString(StorageKey.userName) ?? '';
       motivationQuote =
-          PreferenceManger().getString('motivation_quote') ??
+          PreferenceManger().getString(StorageKey.motivationQuote) ??
           'One task at a time. One step closer.';
-      userImagePath = PreferenceManger().getString('user_image');
+      userImagePath = PreferenceManger().getString(StorageKey.userImage);
       isLoading = false;
     });
   }
@@ -258,6 +259,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _saveImage(XFile file) async {
     final appDir = await getApplicationDocumentsDirectory();
     final newFile = await File(file.path).copy('${appDir.path}/${file.name}');
-    PreferenceManger().setString('user_image', newFile.path);
+    PreferenceManger().setString(StorageKey.userImage, newFile.path);
   }
 }

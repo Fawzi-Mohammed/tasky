@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/enums/task_item_actions_enum.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
@@ -116,7 +117,6 @@ class TaskItemWidget extends StatelessWidget {
     bool isHighPriority = model.isHighPriority;
     return showModalBottomSheet<bool>(
       // isScrollControlled: true,
-      
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       context: context,
       builder: (context) {
@@ -192,7 +192,7 @@ class TaskItemWidget extends StatelessWidget {
                         onPressed: () async {
                           if (formKey.currentState?.validate() ?? false) {
                             final tasksJson = PreferenceManger().getString(
-                              'tasks',
+                              StorageKey.tasks,
                             );
                             List<dynamic> listTasks = [];
 
@@ -217,7 +217,7 @@ class TaskItemWidget extends StatelessWidget {
 
                             final taskEncode = jsonEncode(listTasks);
                             await PreferenceManger().setString(
-                              'tasks',
+                              StorageKey.tasks,
                               taskEncode,
                             );
 

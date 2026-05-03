@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 
@@ -80,11 +81,11 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                       if (userDetailsFormKey.currentState?.validate() ??
                           false) {
                         await PreferenceManger().setString(
-                          'username',
+                          StorageKey.userName,
                           userNameController.text.trim(),
                         );
                         await PreferenceManger().setString(
-                          'motivation_quote',
+                          StorageKey.motivationQuote,
                           motivationQuoteController.text.trim(),
                         );
                         if (!context.mounted) return;

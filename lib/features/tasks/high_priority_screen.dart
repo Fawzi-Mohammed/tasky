@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/models/task_model.dart';
 import 'package:tasky_app/core/components/task_list_widget.dart';
@@ -39,7 +40,9 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
                     highPriorityTasks[index!].isDone = isDone ?? false;
                   });
 
-                  final allData = PreferenceManger().getString('tasks');
+                  final allData = PreferenceManger().getString(
+                    StorageKey.tasks,
+                  );
                   if (allData != null) {
                     List<TaskModel> allDataList = (jsonDecode(allData) as List)
                         .map((taskMap) => TaskModel.fromJson(taskMap))
@@ -50,7 +53,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
 
                     allDataList[newIndex] = highPriorityTasks[index!];
                     await PreferenceManger().setString(
-                      'tasks',
+                      StorageKey.tasks,
                       jsonEncode(allDataList),
                     );
                     _loadTasks();
@@ -66,7 +69,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
       isLoading = true;
     });
     if (!mounted) return;
-    final finalTask = PreferenceManger().getString('tasks');
+    final finalTask = PreferenceManger().getString(StorageKey.tasks);
 
     if (finalTask == null) {
       setState(() {
@@ -90,7 +93,7 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
 
   Future<void> _deleteTask(int? id) async {
     if (id == null) return;
-    final finalTask = PreferenceManger().getString('tasks');
+    final finalTask = PreferenceManger().getString(StorageKey.tasks);
     if (finalTask == null) {
       setState(() {
         highPriorityTasks = [];
@@ -105,7 +108,10 @@ class _HighPriorityScreenState extends State<HighPriorityScreen> {
         .toList();
     tasks.removeWhere((task) => task.id == id);
     final updatedTasks = tasks.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString('tasks', jsonEncode(updatedTasks));
+    await PreferenceManger().setString(
+      StorageKey.tasks,
+      jsonEncode(updatedTasks),
+    );
     _loadTasks();
   }
 }
