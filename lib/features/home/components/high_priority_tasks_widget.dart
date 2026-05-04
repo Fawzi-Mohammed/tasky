@@ -3,18 +3,22 @@ import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
 import 'package:tasky_app/core/widgets/custom_check_box.dart';
-import 'package:tasky_app/features/home/home_controller.dart';
+import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 import 'package:tasky_app/features/tasks/high_priority_screen.dart';
 
 class HighPriorityTasksWidget extends StatelessWidget {
   const HighPriorityTasksWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<HomeController>(
+    return Consumer<TasksController>(
       builder: (context, controller, child) {
-        final tasks = controller.task;
+        final highPriorityTasks = controller.highPriorityTasks;
+        final itemCount = highPriorityTasks.length > 4
+            ? 4
+            : highPriorityTasks.length;
 
-        return tasks.isNotEmpty
+        return highPriorityTasks.isNotEmpty
             ? Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
@@ -29,8 +33,8 @@ class HighPriorityTasksWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.all(16.0),
+                          const Padding(
+                            padding: EdgeInsets.all(16.0),
                             child: Text(
                               'High Priority Tasks',
                               style: TextStyle(
@@ -42,20 +46,10 @@ class HighPriorityTasksWidget extends StatelessWidget {
                           ),
                           ListView.builder(
                             shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount:
-                                tasks.reversed
-                                        .where((e) => e.isHighPriority)
-                                        .length >
-                                    4
-                                ? 4
-                                : tasks.reversed
-                                      .where((e) => e.isHighPriority)
-                                      .length,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: itemCount,
                             itemBuilder: (context, index) {
-                              final task = tasks.reversed
-                                  .where((e) => e.isHighPriority)
-                                  .toList()[index];
+                              final task = highPriorityTasks[index];
                               return Container(
                                 alignment: Alignment.center,
                                 width: double.infinity,
@@ -68,10 +62,10 @@ class HighPriorityTasksWidget extends StatelessWidget {
                                     CustomCheckBox(
                                       value: task.isDone,
                                       onChanged: (value) {
-                                        final index = tasks.indexWhere(
-                                          (e) => e.id == task.id,
+                                        controller.doneTasks(
+                                          value,
+                                          task.id,
                                         );
-                                        controller.doneTask(index, value);
                                       },
                                     ),
                                     Expanded(
@@ -102,7 +96,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
                             builder: (context) => const HighPriorityScreen(),
                           ),
                         );
-                        controller.loadTasks();
+                        controller.init();
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -117,8 +111,8 @@ class HighPriorityTasksWidget extends StatelessWidget {
                             shape: BoxShape.circle,
                             border: Border.all(
                               color: ThemeController.isDark
-                                  ? Color(0xFF6E6E6E)
-                                  : Color(0xFFD1DAD6),
+                                  ? const Color(0xFF6E6E6E)
+                                  : const Color(0xFFD1DAD6),
                               width: 2,
                             ),
                           ),
@@ -128,7 +122,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
                             height: 24,
                             colorFilter: ThemeController.isDark
                                 ? null
-                                : ColorFilter.mode(
+                                : const ColorFilter.mode(
                                     Color(0xFF3A4640),
                                     BlendMode.srcIn,
                                   ),
@@ -139,7 +133,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
                   ],
                 ),
               )
-            : SizedBox.shrink();
+            : const SizedBox.shrink();
       },
     );
   }

@@ -1,117 +1,40 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
-import 'package:tasky_app/core/models/task_model.dart';
+import 'package:provider/provider.dart';
 import 'package:tasky_app/core/components/task_list_widget.dart';
+import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 
-class HighPriorityScreen extends StatefulWidget {
+class HighPriorityScreen extends StatelessWidget {
   const HighPriorityScreen({super.key});
 
   @override
-  State<HighPriorityScreen> createState() => _HighPriorityScreenState();
-}
-
-class _HighPriorityScreenState extends State<HighPriorityScreen> {
-  List<TaskModel> highPriorityTasks = [];
-  bool isLoading = true;
-  @override
-  void initState() {
-    super.initState();
-    _loadTasks();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final controller = context.read<TasksController>();
+
     return Scaffold(
-      appBar: AppBar(title: Text('High Priority Tasks')),
+      appBar: AppBar(title: const Text('High Priority Tasks')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: isLoading
-            ? Center(child: CircularProgressIndicator(color: Color(0xFF15B86C)))
-            : TaskListWidget(
-                onEdit: () => _loadTasks(),
-                onDelete: (id) => _deleteTask(id),
-                tasks: highPriorityTasks,
-                emptyMessage: 'No To Do Tasks Yet',
-                onTap: (bool? isDone, int? index) async {
-                  setState(() {
-                    highPriorityTasks[index!].isDone = isDone ?? false;
-                  });
-
-                  final allData = PreferenceManger().getString(
-                    StorageKey.tasks,
+        child: controller.isLoading
+            ? const Center(
+                child: CircularProgressIndicator(color: Color(0xFF15B86C)),
+              )
+            : Consumer<TasksController>(
+                builder: (context,TasksController valueController, child) {
+                  return TaskListWidget(
+                    onEdit: controller.init,
+                    onDelete: controller.deleteTask,
+                    tasks: valueController.highPriorityTasks,
+                    emptyMessage: 'No High Priority Tasks Yet',
+                    onTap: (isDone, index) {
+                      controller.doneTasks(
+                        isDone,
+                        valueController .highPriorityTasks[index!].id,
+                      );
+                    },
                   );
-                  if (allData != null) {
-                    List<TaskModel> allDataList = (jsonDecode(allData) as List)
-                        .map((taskMap) => TaskModel.fromJson(taskMap))
-                        .toList();
-                    final int newIndex = allDataList.indexWhere(
-                      (t) => t.id == highPriorityTasks[index!].id,
-                    );
-
-                    allDataList[newIndex] = highPriorityTasks[index!];
-                    await PreferenceManger().setString(
-                      StorageKey.tasks,
-                      jsonEncode(allDataList),
-                    );
-                    _loadTasks();
-                  }
                 },
               ),
       ),
     );
-  }
-
-  void _loadTasks() async {
-    setState(() {
-      isLoading = true;
-    });
-    if (!mounted) return;
-    final finalTask = PreferenceManger().getString(StorageKey.tasks);
-
-    if (finalTask == null) {
-      setState(() {
-        highPriorityTasks = [];
-        isLoading = false;
-      });
-      return;
-    }
-
-    final List<dynamic> decodedTasks = jsonDecode(finalTask);
-
-    setState(() {
-      highPriorityTasks = decodedTasks
-          .map((taskMap) => TaskModel.fromJson(taskMap as Map<String, dynamic>))
-          .where((task) => task.isHighPriority)
-          .toList();
-      highPriorityTasks = highPriorityTasks.reversed.toList();
-      isLoading = false;
-    });
-  }
-
-  Future<void> _deleteTask(int? id) async {
-    if (id == null) return;
-    final finalTask = PreferenceManger().getString(StorageKey.tasks);
-    if (finalTask == null) {
-      setState(() {
-        highPriorityTasks = [];
-        isLoading = false;
-      });
-      return;
-    }
-
-    final List<dynamic> decodedTasks = jsonDecode(finalTask);
-    final List<TaskModel> tasks = decodedTasks
-        .map((e) => TaskModel.fromJson(e))
-        .toList();
-    tasks.removeWhere((task) => task.id == id);
-    final updatedTasks = tasks.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString(
-      StorageKey.tasks,
-      jsonEncode(updatedTasks),
-    );
-    _loadTasks();
   }
 }

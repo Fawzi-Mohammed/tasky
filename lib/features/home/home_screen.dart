@@ -6,7 +6,8 @@ import 'package:tasky_app/features/add_tasks/add_task_screen.dart';
 import 'package:tasky_app/features/home/components/achieved_tasks_widget.dart';
 import 'package:tasky_app/features/home/components/high_priority_tasks_widget.dart';
 import 'package:tasky_app/features/home/components/sliver_task_list_widget.dart';
-import 'package:tasky_app/features/home/home_controller.dart';
+import 'package:tasky_app/features/home/controllers/home_controller.dart';
+import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -31,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 );
 
                 if (result != null && result) {
-                  controllerContext.read<HomeController>().loadTasks();
+                  controllerContext.read<TasksController>().init();
                 }
               },
 
