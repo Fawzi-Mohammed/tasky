@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
@@ -19,15 +20,15 @@ class WelcomeScreen extends StatelessWidget {
               key: _key,
               child: Column(
                 children: [
-                  const SizedBox(height: 16),
+                  SizedBox(height: AppSizes.h16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const CustomSvgPicture.withColorFilter(
+                      CustomSvgPicture.withColorFilter(
                         path: 'assets/images/logo.svg',
                         size: 42,
                       ),
-                      const SizedBox(width: 16),
+                      SizedBox(width: AppSizes.w16),
 
                       Text(
                         'Tasky',
@@ -35,7 +36,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 108),
+                  SizedBox(height: AppSizes.h108),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -43,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                         'Welcome To Tasky',
                         style: Theme.of(context).textTheme.displaySmall,
                       ),
-                      const SizedBox(width: 8),
+                      SizedBox(width: AppSizes.w8),
 
                       const CustomSvgPicture.withColorFilter(
                         path: 'assets/images/waving-hand.svg',
@@ -51,21 +52,21 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: AppSizes.h8),
                   Text(
                     'Your productivity journey starts here.',
                     style: Theme.of(
                       context,
-                    ).textTheme.displaySmall?.copyWith(fontSize: 16),
+                    ).textTheme.displaySmall?.copyWith(fontSize: AppSizes.sp16),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(height: AppSizes.h24),
                   const CustomSvgPicture.withColorFilter(
                     path: 'assets/images/welcome.svg',
                     size: 216,
                   ),
-                  const SizedBox(height: 28),
+                  SizedBox(height: AppSizes.h28),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    padding: EdgeInsets.symmetric(horizontal: AppSizes.pw16),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -81,15 +82,13 @@ class WelcomeScreen extends StatelessWidget {
                           },
                         ),
 
-                        const SizedBox(height: 24),
+                        SizedBox(height: AppSizes.h24),
 
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Color(0xFF15B86C),
-                            foregroundColor: Color(0xFFFFFCFC),
                             fixedSize: Size(
                               MediaQuery.of(context).size.width,
-                              40,
+                              AppSizes.h40,
                             ),
                           ),
                           onPressed: () async {

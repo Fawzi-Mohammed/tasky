@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:provider/provider.dart';
-import 'package:tasky_app/core/theme/theme_controller.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/widgets/custom_check_box.dart';
 import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 import 'package:tasky_app/features/tasks/high_priority_screen.dart';
@@ -11,6 +11,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Consumer<TasksController>(
       builder: (context, controller, child) {
         final highPriorityTasks = controller.highPriorityTasks;
@@ -22,7 +23,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
             ? Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(20.0),
+                  borderRadius: BorderRadius.circular(AppSizes.r20),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -33,14 +34,15 @@ class HighPriorityTasksWidget extends StatelessWidget {
                         mainAxisSize: MainAxisSize.max,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Padding(
-                            padding: EdgeInsets.all(16.0),
+                          Padding(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: AppSizes.pw16,
+                              vertical: AppSizes.ph16,
+                            ),
                             child: Text(
                               'High Priority Tasks',
-                              style: TextStyle(
-                                color: Color(0xFF15B86C),
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                color: theme.colorScheme.primary,
                               ),
                             ),
                           ),
@@ -54,7 +56,9 @@ class HighPriorityTasksWidget extends StatelessWidget {
                                 alignment: Alignment.center,
                                 width: double.infinity,
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
+                                  borderRadius: BorderRadius.circular(
+                                    AppSizes.r20,
+                                  ),
                                 ),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -62,10 +66,7 @@ class HighPriorityTasksWidget extends StatelessWidget {
                                     CustomCheckBox(
                                       value: task.isDone,
                                       onChanged: (value) {
-                                        controller.doneTasks(
-                                          value,
-                                          task.id,
-                                        );
+                                        controller.doneTasks(value, task.id);
                                       },
                                     ),
                                     Expanded(
@@ -99,33 +100,35 @@ class HighPriorityTasksWidget extends StatelessWidget {
                         controller.init();
                       },
                       child: Padding(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: AppSizes.pw16,
+                          vertical: AppSizes.ph16,
+                        ),
                         child: Container(
-                          height: 56,
-                          width: 48,
-                          padding: const EdgeInsets.all(8.0),
+                          height: AppSizes.h56,
+                          width: AppSizes.w48,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: AppSizes.pw8,
+                            vertical: AppSizes.ph8,
+                          ),
                           decoration: BoxDecoration(
-                            color: Theme.of(
-                              context,
-                            ).colorScheme.primaryContainer,
+                            color: theme.colorScheme.primaryContainer,
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: ThemeController.isDark
-                                  ? const Color(0xFF6E6E6E)
-                                  : const Color(0xFFD1DAD6),
-                              width: 2,
+                              color:
+                                  theme.dividerTheme.color ??
+                                  theme.colorScheme.tertiary,
+                              width: AppSizes.w2,
                             ),
                           ),
                           child: SvgPicture.asset(
                             'assets/images/arrow_up_right.svg',
-                            width: 24,
-                            height: 24,
-                            colorFilter: ThemeController.isDark
-                                ? null
-                                : const ColorFilter.mode(
-                                    Color(0xFF3A4640),
-                                    BlendMode.srcIn,
-                                  ),
+                            width: AppSizes.w24,
+                            height: AppSizes.h24,
+                            colorFilter: ColorFilter.mode(
+                              theme.colorScheme.secondary,
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
                       ),

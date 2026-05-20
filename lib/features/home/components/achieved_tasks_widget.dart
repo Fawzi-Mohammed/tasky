@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 
 class AchievedTasksWidget extends StatelessWidget {
@@ -9,14 +10,18 @@ class AchievedTasksWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Consumer<TasksController>(
       builder: (context, TasksController controller, child) {
         return Container(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.pw16,
+            vertical: AppSizes.ph16,
+          ),
           width: double.infinity,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primaryContainer,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(AppSizes.r20),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -28,7 +33,7 @@ class AchievedTasksWidget extends StatelessWidget {
                     'Achieved Tasks',
                     style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: AppSizes.ph4),
                   Text(
                     '${controller.totalDoneTasks} Out of ${controller.totalTasks} Done',
                     style: Theme.of(context).textTheme.titleSmall,
@@ -39,17 +44,17 @@ class AchievedTasksWidget extends StatelessWidget {
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
-                    width: 48,
-                    height: 48,
+                    width: AppSizes.w48,
+                    height: AppSizes.h48,
                     child: Transform.rotate(
                       angle: -pi / 2,
                       child: CircularProgressIndicator(
                         value: controller.percentage,
                         valueColor: AlwaysStoppedAnimation<Color>(
-                          Color(0xFF15B86C),
+                          theme.colorScheme.primary,
                         ),
-                        backgroundColor: Color(0xFF9E9E9E),
-                        strokeWidth: 4,
+                        backgroundColor: theme.colorScheme.tertiary,
+                        strokeWidth: AppSizes.w4,
                       ),
                     ),
                   ),

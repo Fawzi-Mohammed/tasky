@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CustomSvgPicture extends StatelessWidget {
@@ -23,8 +24,8 @@ class CustomSvgPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     return SvgPicture.asset(
       path,
-      width: size,
-      height: size,
+      width: size.w,
+      height: size.h,
       colorFilter: witheColorFilter
           ? ColorFilter.mode(
               color ?? Theme.of(context).colorScheme.secondary,

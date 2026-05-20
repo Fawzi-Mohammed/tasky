@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_app/core/components/task_item_widget.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/features/tasks/controllers/tasks_controller.dart';
 
 class SliverTaskListWidget extends StatelessWidget {
@@ -14,7 +15,9 @@ class SliverTaskListWidget extends StatelessWidget {
         return controller.isLoading
             ? SliverToBoxAdapter(
                 child: Center(
-                  child: CircularProgressIndicator(color: Color(0xFF15B86C)),
+                  child: CircularProgressIndicator(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               )
             : tasks.isEmpty
@@ -25,7 +28,7 @@ class SliverTaskListWidget extends StatelessWidget {
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.primaryContainer,
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppSizes.r20),
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -35,10 +38,10 @@ class SliverTaskListWidget extends StatelessWidget {
                 ),
               )
             : SliverPadding(
-                padding: EdgeInsetsGeometry.only(bottom: 80),
+                padding: EdgeInsets.only(bottom: AppSizes.ph80),
                 sliver: SliverList.separated(
                   itemCount: tasks.length,
-                  separatorBuilder: (_, _) => SizedBox(height: 8),
+                  separatorBuilder: (_, _) => SizedBox(height: AppSizes.h8),
                   itemBuilder: (context, index) {
                     final task = tasks[index];
 

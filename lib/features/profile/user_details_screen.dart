@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
@@ -43,7 +44,10 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
       appBar: AppBar(title: Text('User Details')),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.pw16,
+            vertical: AppSizes.ph8,
+          ),
           child: Form(
             key: userDetailsFormKey,
             child: Column(
@@ -63,7 +67,7 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                             return null;
                           },
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: AppSizes.ph20),
                         CustomTextFormField(
                           controller: motivationQuoteController,
                           hintText: 'One task at a time. One step closer.',

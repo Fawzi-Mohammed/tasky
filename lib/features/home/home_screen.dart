@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
 import 'package:tasky_app/features/add_tasks/add_task_screen.dart';
 import 'package:tasky_app/features/home/components/achieved_tasks_widget.dart';
@@ -42,7 +43,10 @@ class HomeScreen extends StatelessWidget {
           },
         ),
         body: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.symmetric(
+            horizontal: AppSizes.pw16,
+            vertical: AppSizes.ph16,
+          ),
           child: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -56,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                               controller.userImagePath,
                           builder: (context, String? userImagePath, child) {
                             return CircleAvatar(
-                              radius: 21,
+                              radius: AppSizes.w21,
                               backgroundImage: userImagePath == null
                                   ? AssetImage('assets/images/avtare.png')
                                   : FileImage(File(userImagePath)),
@@ -64,7 +68,7 @@ class HomeScreen extends StatelessWidget {
                             );
                           },
                         ),
-                        SizedBox(width: 8),
+                        SizedBox(width: AppSizes.w8),
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -88,7 +92,7 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSizes.h16),
                     Text(
                       'Yuhuu ,Your work Is',
                       style: Theme.of(context).textTheme.displayLarge,
@@ -106,12 +110,15 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 16),
+                    SizedBox(height: AppSizes.h16),
                     AchievedTasksWidget(),
-                    SizedBox(height: 8),
+                    SizedBox(height: AppSizes.h8),
                     HighPriorityTasksWidget(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 24.0, bottom: 16.0),
+                      padding: EdgeInsets.only(
+                        top: AppSizes.ph24,
+                        bottom: AppSizes.ph16,
+                      ),
                       child: Text(
                         'My Tasks',
                         style: Theme.of(context).textTheme.labelSmall,

@@ -11,8 +11,8 @@ class CustomCheckBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Checkbox(
-      activeColor: Color(0xFF15B86C),
-      checkColor: Color(0xFFFFFCFC),
+      activeColor: Theme.of(context).colorScheme.primary,
+      checkColor: Theme.of(context).colorScheme.onPrimary,
       value: value,
 
       onChanged: (value) => onChanged(value),

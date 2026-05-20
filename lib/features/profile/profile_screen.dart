@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
@@ -31,20 +32,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return isLoading
-        ? Center(child: CircularProgressIndicator(color: Color(0xFF15B86C)))
+        ? Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          )
         : Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.symmetric(
+              horizontal: AppSizes.pw16,
+              vertical: AppSizes.ph16,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: EdgeInsets.only(top: AppSizes.h8),
                   child: Text(
                     'My Profile',
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ),
-                SizedBox(height: 16),
+                SizedBox(height: AppSizes.h16),
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +62,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         children: [
                           CircleAvatar(
-                            radius: 55,
+                            radius: AppSizes.w55,
                             backgroundImage: userImagePath == null
                                 ? AssetImage('assets/images/avtare.png')
                                 : FileImage(File(userImagePath!)),
@@ -72,20 +80,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               });
                             },
                             child: Container(
-                              width: 45,
-                              height: 45,
+                              width: AppSizes.w45,
+                              height: AppSizes.h45,
                               decoration: BoxDecoration(
                                 color: Theme.of(
                                   context,
                                 ).colorScheme.primaryContainer,
-                                borderRadius: BorderRadius.circular(100),
+                                borderRadius: BorderRadius.circular(
+                                  AppSizes.r100,
+                                ),
                               ),
-                              child: Icon(Icons.camera_alt_outlined),
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                size: AppSizes.r26,
+                              ),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 6),
+                      SizedBox(height: AppSizes.h6),
 
                       Text(
                         userName,
@@ -98,12 +111,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 24),
+                SizedBox(height: AppSizes.ph24),
                 Text(
                   'Profile Info',
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: AppSizes.ph24),
                 ListTile(
                   onTap: () async {
                     final result = await await Navigator.push(
@@ -210,7 +223,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           children: [
             SimpleDialogOption(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.pw16,
+                vertical: AppSizes.ph16,
+              ),
 
               onPressed: () async {
                 if (!mounted) return;
@@ -223,15 +239,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               child: Row(
-                children: const [
-                  Icon(Icons.camera_alt),
-                  SizedBox(width: 8),
-                  Text('Camera'),
+                children: [
+                  const Icon(Icons.camera_alt),
+                  SizedBox(width: AppSizes.w8),
+                  const Text('Camera'),
                 ],
               ),
             ),
             SimpleDialogOption(
-              padding: const EdgeInsets.all(16),
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.pw16,
+                vertical: AppSizes.ph16,
+              ),
               onPressed: () async {
                 if (!mounted) return;
                 Navigator.pop(context);
@@ -243,10 +262,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 }
               },
               child: Row(
-                children: const [
-                  Icon(Icons.photo_library),
-                  SizedBox(width: 8),
-                  Text('Gallery'),
+                children: [
+                  const Icon(Icons.photo_library),
+                  SizedBox(width: AppSizes.w8),
+                  const Text('Gallery'),
                 ],
               ),
             ),

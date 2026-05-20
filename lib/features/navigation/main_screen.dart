@@ -80,14 +80,12 @@ class _MainScreenState extends State<MainScreen> {
     required String assetPath,
     required int index,
   }) {
+    final navTheme = Theme.of(context).bottomNavigationBarTheme;
     final isSelected = _currentIndex == index;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
     final color = isSelected
-        ? const Color(0xFF15B86C)
-        : isDark
-        ? const Color(0xFFC6C6C6)
-        : const Color(0xFF3A4640);
+        ? (navTheme.selectedItemColor ?? Theme.of(context).colorScheme.primary)
+        : (navTheme.unselectedItemColor ??
+              Theme.of(context).colorScheme.secondary);
 
     return SvgPicture.asset(
       assetPath,

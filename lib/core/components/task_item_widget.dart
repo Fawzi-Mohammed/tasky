@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/enums/task_item_actions_enum.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
-import 'package:tasky_app/core/theme/theme_controller.dart';
 import 'package:tasky_app/core/widgets/custom_check_box.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 import 'package:tasky_app/core/models/task_model.dart';
@@ -23,16 +23,21 @@ class TaskItemWidget extends StatelessWidget {
   final void Function() onEdit;
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
     return Container(
       alignment: Alignment.center,
-      height: 56,
+      height: AppSizes.h56,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(20),
-        border: ThemeController.isDark
+        color: theme.colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(AppSizes.r20),
+        border: isDark
             ? null
-            : Border.all(width: 1, color: Color(0xFFD1DAD6)),
+            : Border.all(
+                width: AppSizes.w1,
+                color: theme.dividerTheme.color ?? theme.colorScheme.tertiary,
+              ),
       ),
       child: Row(
         // mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -42,7 +47,7 @@ class TaskItemWidget extends StatelessWidget {
 
             onChanged: (value) => onChanged(value),
           ),
-          SizedBox(width: 16),
+          SizedBox(width: AppSizes.w16),
           Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -69,10 +74,10 @@ class TaskItemWidget extends StatelessWidget {
           PopupMenuButton<TaskItemActionsEnum>(
             icon: Icon(
               Icons.more_vert,
-              color: ThemeController.isDark
-                  ? (model.isDone ? Color(0xFFA0A0A0) : Color(0xFFC6C6C6))
-                  : (model.isDone ? Color(0xFF6A6A6A) : Color(0xFF3A4640)),
-              size: 24,
+              color: model.isDone
+                  ? theme.textTheme.titleLarge?.color
+                  : theme.colorScheme.secondary,
+              size: AppSizes.w24,
             ),
             onSelected: (value) async {
               switch (value) {
@@ -123,9 +128,9 @@ class TaskItemWidget extends StatelessWidget {
         return StatefulBuilder(
           builder: (context, setState) {
             return Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 8,
+              padding: EdgeInsets.symmetric(
+                horizontal: AppSizes.pw16,
+                vertical: AppSizes.ph8,
               ),
               child: Form(
                 key: formKey,
@@ -133,7 +138,7 @@ class TaskItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 30),
+                    SizedBox(height: AppSizes.ph30),
                     Expanded(
                       child: SingleChildScrollView(
                         child: Column(
@@ -151,7 +156,7 @@ class TaskItemWidget extends StatelessWidget {
                               },
                             ),
 
-                            SizedBox(height: 20),
+                            SizedBox(height: AppSizes.ph20),
 
                             CustomTextFormField(
                               title: 'Task Description',
@@ -160,7 +165,7 @@ class TaskItemWidget extends StatelessWidget {
                               controller: taskDescriptionController,
                               maxLines: 5,
                             ),
-                            SizedBox(height: 20),
+                            SizedBox(height: AppSizes.ph20),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -221,13 +226,14 @@ class TaskItemWidget extends StatelessWidget {
                               taskEncode,
                             );
 
+                            if (!context.mounted) return;
                             Navigator.of(context).pop(true);
                           }
                         },
                         label: Text('Edit Task'),
                       ),
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: AppSizes.h50),
                   ],
                 ),
               ),

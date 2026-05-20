@@ -1,50 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:tasky_app/core/constants/app_sizes.dart';
+import 'package:tasky_app/core/theme/app_text_styles.dart';
+import 'package:tasky_app/core/theme/dark_colors.dart';
 
 ThemeData darkTheme = ThemeData(
-  colorScheme: ColorScheme.dark(
-    primaryContainer: Color(0xFF282828),
-    secondary: Color(0xFFC6C6C6),
+  colorScheme: const ColorScheme.dark(
+    primary: DarkColors.accent,
+    onPrimary: DarkColors.onAccent,
+    primaryContainer: DarkColors.surface,
+    secondary: DarkColors.textSecondary,
+    tertiary: DarkColors.muted,
   ),
   brightness: Brightness.dark,
   elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      fixedSize: WidgetStateProperty.all(Size(double.infinity, 40)),
-      backgroundColor: WidgetStateProperty.all(Color(0xFF15B86C)),
-      foregroundColor: WidgetStateProperty.all(Color(0xFFFFFCFC)),
-      textStyle: WidgetStateProperty.all(
-        TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-      ),
+    style: ElevatedButton.styleFrom(
+      fixedSize: Size(double.infinity, AppSizes.h40),
+      backgroundColor: DarkColors.accent,
+      foregroundColor: DarkColors.onAccent,
+      textStyle: AppTextStyles.button,
     ),
   ),
   textButtonTheme: TextButtonThemeData(
-    style: ButtonStyle(
-      foregroundColor: WidgetStatePropertyAll(Color(0xFFFFFCFC)),
-    ),
+    style: TextButton.styleFrom(foregroundColor: DarkColors.textPrimary),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Color(0xFF15B86C),
-    foregroundColor: Color(0xFFFFFCFC),
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-    extendedTextStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+    backgroundColor: DarkColors.accent,
+    foregroundColor: DarkColors.onAccent,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizes.r30),
+    ),
+    extendedTextStyle: AppTextStyles.button,
   ),
   switchTheme: SwitchThemeData(
     trackColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Color(0xFF15B86C);
+        return DarkColors.accent;
       }
-      return Colors.white;
+      return DarkColors.white;
     }),
     thumbColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return Colors.white;
+        return DarkColors.white;
       }
-      return Color(0xFF9E9E9E);
+      return DarkColors.muted;
     }),
     trackOutlineColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
         return Colors.transparent;
       }
-      return Color(0xFF9E9E9E);
+      return DarkColors.muted;
     }),
     trackOutlineWidth: WidgetStateProperty.resolveWith<double>((states) {
       if (states.contains(WidgetState.selected)) {
@@ -53,117 +57,118 @@ ThemeData darkTheme = ThemeData(
       return 2;
     }),
   ),
-
-  scaffoldBackgroundColor: Color(0xFF181818),
+  scaffoldBackgroundColor: DarkColors.scaffold,
   appBarTheme: AppBarTheme(
-    backgroundColor: Color(0xFF181818),
-    titleTextStyle: TextStyle(
-      color: Color(0xFFFFFCFC),
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
+    backgroundColor: DarkColors.scaffold,
+    titleTextStyle: AppTextStyles.regular(
+      color: DarkColors.textPrimary,
+      size: AppSizes.sp20,
     ),
     centerTitle: true,
-    iconTheme: IconThemeData(color: Color(0xFFFFFCFC)),
+    iconTheme: const IconThemeData(color: DarkColors.textPrimary),
   ),
   useMaterial3: true,
   textTheme: TextTheme(
-    displayMedium: TextStyle(
-      color: Color(0xFFFFFFFF),
-      fontWeight: FontWeight.w400,
-      fontSize: 28,
+    displayMedium: AppTextStyles.regular(
+      color: DarkColors.white,
+      size: AppSizes.sp28,
     ),
-    displaySmall: TextStyle(
-      color: Color(0xFFFFFFFF),
-      fontWeight: FontWeight.w400,
-      fontSize: 24,
+    displaySmall: AppTextStyles.regular(
+      color: DarkColors.white,
+      size: AppSizes.sp24,
     ),
-    displayLarge: TextStyle(
-      color: Color(0xFFFFFCFC),
-      fontSize: 32,
-      fontWeight: FontWeight.w400,
+    displayLarge: AppTextStyles.regular(
+      color: DarkColors.textPrimary,
+      size: AppSizes.sp32,
     ),
-    titleMedium: TextStyle(
-      color: Color(0xFFFFFCFC),
-      fontWeight: FontWeight.w400,
-      fontSize: 16,
+    titleMedium: AppTextStyles.regular(
+      color: DarkColors.textPrimary,
+      size: AppSizes.sp16,
     ),
-    titleSmall: TextStyle(
-      color: Color(0xFFC6C6C6),
-      fontWeight: FontWeight.w400,
-      fontSize: 14,
+    titleSmall: AppTextStyles.regular(
+      color: DarkColors.textSecondary,
+      size: AppSizes.sp14,
     ),
-    labelLarge: TextStyle(color: Colors.white, fontSize: 24),
-
-    labelMedium: TextStyle(color: Colors.white, fontSize: 16),
-    titleLarge: TextStyle(
-      color: Color(0xFFA0A0A0),
-      fontSize: 16,
+    labelLarge: AppTextStyles.regular(
+      color: DarkColors.white,
+      size: AppSizes.sp24,
+    ),
+    labelMedium: AppTextStyles.regular(
+      color: DarkColors.white,
+      size: AppSizes.sp16,
+    ),
+    titleLarge: AppTextStyles.regular(
+      color: DarkColors.textDone,
+      size: AppSizes.sp16,
       decoration: TextDecoration.lineThrough,
-      decorationColor: Color(0xFF49454F),
+      decorationColor: DarkColors.strikeThrough,
       overflow: TextOverflow.ellipsis,
-      fontWeight: FontWeight.w400,
     ),
-    labelSmall: TextStyle(
-      color: Color(0xFFFFFCFC),
-      fontSize: 20,
-      fontWeight: FontWeight.w400,
+    labelSmall: AppTextStyles.regular(
+      color: DarkColors.textPrimary,
+      size: AppSizes.sp20,
     ),
   ),
   inputDecorationTheme: InputDecorationTheme(
     border: OutlineInputBorder(
       borderSide: BorderSide.none,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppSizes.r16),
     ),
     errorBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.red, width: 0.5),
-      borderRadius: BorderRadius.circular(16),
+      borderSide: BorderSide(color: Colors.red, width: AppSizes.w1 * 0.5),
+      borderRadius: BorderRadius.circular(AppSizes.r16),
     ),
-    hintStyle: TextStyle(
-      fontSize: 16,
-      color: Color(0xFF6D6D6D),
-      fontWeight: FontWeight.w400,
+    hintStyle: AppTextStyles.regular(
+      color: DarkColors.inputHint,
+      size: AppSizes.sp16,
     ),
     filled: true,
-    fillColor: Color(0xFF282828),
+    fillColor: DarkColors.surface,
   ),
   checkboxTheme: CheckboxThemeData(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
-    side: BorderSide(width: 2, color: Color(0xFF6E6E6E)),
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(AppSizes.r4),
+    ),
+    side: BorderSide(width: AppSizes.w2, color: DarkColors.border),
+    fillColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return DarkColors.accent;
+      }
+      return Colors.transparent;
+    }),
+    checkColor: const WidgetStatePropertyAll(DarkColors.onAccent),
   ),
-  iconTheme: IconThemeData(color: Color(0xFFFFFCFC)),
+  iconTheme: const IconThemeData(color: DarkColors.textPrimary),
   listTileTheme: ListTileThemeData(
-    titleTextStyle: TextStyle(
-      color: Color(0xFFFFFCFC),
-      fontSize: 16,
-      fontWeight: FontWeight.w400,
+    titleTextStyle: AppTextStyles.regular(
+      color: DarkColors.textPrimary,
+      size: AppSizes.sp16,
     ),
   ),
-  dividerTheme: DividerThemeData(color: Color(0xFF6E6E6E), thickness: 1),
-  textSelectionTheme: TextSelectionThemeData(
-    cursorColor: Colors.white,
-
-    selectionHandleColor: Colors.white,
+  dividerTheme: const DividerThemeData(color: DarkColors.border, thickness: 1),
+  textSelectionTheme: const TextSelectionThemeData(
+    cursorColor: DarkColors.white,
+    selectionHandleColor: DarkColors.white,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
-    backgroundColor: Color(0xFF181818),
+    backgroundColor: DarkColors.scaffold,
     type: BottomNavigationBarType.fixed,
-    unselectedItemColor: Color(0xFFC6C6C6),
-    selectedItemColor: Color(0xFF15B86C),
-    unselectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w600),
-    selectedLabelStyle: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+    unselectedItemColor: DarkColors.textSecondary,
+    selectedItemColor: DarkColors.accent,
+    unselectedLabelStyle: AppTextStyles.bottomNavUnselected,
+    selectedLabelStyle: AppTextStyles.bottomNavSelected,
   ),
   splashFactory: NoSplash.splashFactory,
   popupMenuTheme: PopupMenuThemeData(
-    color: Color(0xFF181818),
+    color: DarkColors.scaffold,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(16),
-      side: BorderSide(color: Color(0xFF15B86C), width: 1),
+      borderRadius: BorderRadius.circular(AppSizes.r16),
+      side: BorderSide(color: DarkColors.accent, width: AppSizes.w1),
     ),
     elevation: 2,
-    shadowColor: Color(0xFF15B86C),
-    //  textStyle: TextStyle(fontSize: 16),
+    shadowColor: DarkColors.accent,
     labelTextStyle: WidgetStatePropertyAll(
-      TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+      AppTextStyles.regular(color: DarkColors.textPrimary, size: AppSizes.sp20),
     ),
   ),
 );
