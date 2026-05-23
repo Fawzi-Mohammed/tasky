@@ -1,9 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:tasky_app/core/constants/storage_key.dart';
+//import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/models/task_model.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/file_storage_manger.dart';
+//import 'package:tasky_app/core/services/preference_manger.dart';
 
 class TasksController extends ChangeNotifier {
   List<TaskModel> tasks = [];
@@ -21,24 +20,25 @@ class TasksController extends ChangeNotifier {
 
   void _loadTasks() async {
     isLoading = true;
-    final finalTask = PreferenceManger().getString(StorageKey.tasks);
+    // final finalTask = PreferenceManger().getString(StorageKey.tasks);
+    final tasksData = await FileStorageManger().loadTasks();
+    // if (finalTask == null) {
+    //   tasks = [];
+    //   isLoading = false;
 
-    if (finalTask == null) {
-      tasks = [];
-      isLoading = false;
+    //   return;
+    // }
 
-      return;
-    }
+    //  final List<dynamic> decodedTasks = jsonDecode(finalTask);
+    // now list use the file storage
 
-    final List<dynamic> decodedTasks = jsonDecode(finalTask);
-
-    tasks = decodedTasks
+    tasks = tasksData
         .map((taskMap) => TaskModel.fromJson(taskMap as Map<String, dynamic>))
         .toList();
     isLoading = false;
     notifyListeners();
 
-    tasks = decodedTasks
+    tasks = tasksData
         .map((taskMap) => TaskModel.fromJson(taskMap as Map<String, dynamic>))
         .toList();
 
@@ -52,10 +52,12 @@ class TasksController extends ChangeNotifier {
     tasks[index].isDone = value ?? false;
     _calculatePercentage();
     final updateTasks = tasks.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString(
-      StorageKey.tasks,
-      jsonEncode(updateTasks),
-    );
+    // await PreferenceManger().setString(
+    //   StorageKey.tasks,
+    //   jsonEncode(updateTasks),
+    // );
+    await FileStorageManger().saveTasks(updateTasks);
+
     _loadData();
     _calculatePercentage();
     notifyListeners();
@@ -78,10 +80,11 @@ class TasksController extends ChangeNotifier {
     _loadData();
     _calculatePercentage();
     final updatedTasks = tasks.map((task) => task.toJson()).toList();
-    await PreferenceManger().setString(
-      StorageKey.tasks,
-      jsonEncode(updatedTasks),
-    );
+    // await PreferenceManger().setString(
+    //   StorageKey.tasks,
+    //   jsonEncode(updatedTasks),
+    // );
+    FileStorageManger().saveTasks(updatedTasks);
 
     notifyListeners();
   }
@@ -91,5 +94,9 @@ class TasksController extends ChangeNotifier {
     totalDoneTasks = tasks.where((task) => task.isDone).length;
     percentage = totalTasks == 0 ? 0 : totalDoneTasks / totalTasks;
     notifyListeners();
+  }
+
+  void clearTasks() {
+    _loadTasks();
   }
 }
