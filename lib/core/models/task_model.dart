@@ -1,8 +1,16 @@
+import 'package:hive_ce_flutter/hive_flutter.dart';
+ part 'task_model.g.dart';
+@HiveType(typeId: 0)
 class TaskModel {
+  @HiveField(0)
   final String taskName;
+  @HiveField(1)
   final String taskDescription;
+  @HiveField(2)
   final bool isHighPriority;
+  @HiveField(3)
   final int id;
+  @HiveField(4)
   bool isDone;
 
   TaskModel({

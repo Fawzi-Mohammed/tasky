@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
-import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/enums/task_item_actions_enum.dart';
-import 'package:tasky_app/core/services/file_storage_manger.dart';
-//import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/models/task_model.dart';
+import 'package:tasky_app/core/services/hive_storage_manger.dart';
 import 'package:tasky_app/core/widgets/custom_check_box.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
-import 'package:tasky_app/core/models/task_model.dart';
 
 class TaskItemWidget extends StatelessWidget {
   const TaskItemWidget({
@@ -41,11 +37,9 @@ class TaskItemWidget extends StatelessWidget {
               ),
       ),
       child: Row(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomCheckBox(
             value: model.isDone,
-
             onChanged: (value) => onChanged(value),
           ),
           SizedBox(width: AppSizes.w16),
@@ -87,8 +81,6 @@ class TaskItemWidget extends StatelessWidget {
                   break;
                 case TaskItemActionsEnum.delete:
                   await _showDeleteDialog(context);
-
-                  //  onDelete(model.id);
                   break;
                 case TaskItemActionsEnum.edit:
                   final result = await _showBottomSheet(context, model);
@@ -113,16 +105,14 @@ class TaskItemWidget extends StatelessWidget {
   }
 
   Future<bool?> _showBottomSheet(BuildContext context, TaskModel model) async {
-    TextEditingController taskNameController = TextEditingController(
+    final TextEditingController taskNameController = TextEditingController(
       text: model.taskName,
     );
-    TextEditingController taskDescriptionController = TextEditingController(
-      text: model.taskDescription,
-    );
-    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final TextEditingController taskDescriptionController =
+        TextEditingController(text: model.taskDescription);
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     bool isHighPriority = model.isHighPriority;
     return showModalBottomSheet<bool>(
-      // isScrollControlled: true,
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       context: context,
       builder: (context) {
@@ -190,25 +180,16 @@ class TaskItemWidget extends StatelessWidget {
                         ),
                       ),
                     ),
-                    //       Spacer(),
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         icon: Icon(Icons.edit),
                         onPressed: () async {
                           if (formKey.currentState?.validate() ?? false) {
-                            List<dynamic> listTasks = await FileStorageManger()
+                            List<TaskModel> listTasks = HiveStorageManger()
                                 .loadTasks();
-                            //       final tasksJson = PreferenceManger().getString(
-                            //         StorageKey.tasks,
-                            //       );
-                            //       List<dynamic> listTasks = [];
 
-                            //       if (tasksJson != null) {
-                            //         listTasks = jsonDecode(tasksJson);
-                            //       }
-
-                            TaskModel newModel = TaskModel(
+                            final TaskModel newModel = TaskModel(
                               id: model.id,
                               taskName: taskNameController.text,
                               taskDescription: taskDescriptionController.text,
@@ -217,18 +198,13 @@ class TaskItemWidget extends StatelessWidget {
                             );
 
                             final item = listTasks.firstWhere(
-                              (e) => e['id'] == model.id,
+                              (e) => e.id == model.id,
                             );
 
                             final int index = listTasks.indexOf(item);
-                            listTasks[index] = newModel.toJson();
+                            listTasks[index] = newModel;
 
-                            // final taskEncode = jsonEncode(listTasks);
-                            // await PreferenceManger().setString(
-                            //   StorageKey.tasks,
-                            //   taskEncode,
-                            // );
-                            await FileStorageManger().saveTasks(listTasks);
+                            await HiveStorageManger().saveTasks(listTasks);
 
                             if (!context.mounted) return;
                             Navigator.of(context).pop(true);

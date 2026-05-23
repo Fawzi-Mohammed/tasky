@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/file_storage_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manger.dart';
 import 'package:tasky_app/core/services/preference_manger.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
@@ -174,8 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () async {
                     await PreferenceManger().remove(StorageKey.userName);
                     await PreferenceManger().remove(StorageKey.motivationQuote);
-                    // await PreferenceManger().remove(StorageKey.tasks);
-                    await FileStorageManger().clear();
+                    await HiveStorageManger().clear();
                     if (!context.mounted) return;
                     context.read<TasksController>().clearTasks();
                     Navigator.pushAndRemoveUntil(

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'package:tasky_app/core/constants/storage_key.dart';
 import 'package:tasky_app/core/models/task_model.dart';
-import 'package:tasky_app/core/services/file_storage_manger.dart';
-//import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manger.dart';
 
 class TasksController extends ChangeNotifier {
   List<TaskModel> tasks = [];
@@ -18,46 +16,22 @@ class TasksController extends ChangeNotifier {
     _loadTasks();
   }
 
-  void _loadTasks() async {
+  void _loadTasks() {
     isLoading = true;
-    // final finalTask = PreferenceManger().getString(StorageKey.tasks);
-    final tasksData = await FileStorageManger().loadTasks();
-    // if (finalTask == null) {
-    //   tasks = [];
-    //   isLoading = false;
 
-    //   return;
-    // }
-
-    //  final List<dynamic> decodedTasks = jsonDecode(finalTask);
-    // now list use the file storage
-
-    tasks = tasksData
-        .map((taskMap) => TaskModel.fromJson(taskMap as Map<String, dynamic>))
-        .toList();
-    isLoading = false;
-    notifyListeners();
-
-    tasks = tasksData
-        .map((taskMap) => TaskModel.fromJson(taskMap as Map<String, dynamic>))
-        .toList();
-
-    isLoading = false;
+    tasks = HiveStorageManger().loadTasks();
     _loadData();
     _calculatePercentage();
+    isLoading = false;
+    notifyListeners();
   }
 
-  void doneTasks(bool? value, int id) async {
+  Future<void> doneTasks(bool? value, int id) async {
     final int index = tasks.indexWhere((task) => task.id == id);
-    tasks[index].isDone = value ?? false;
-    _calculatePercentage();
-    final updateTasks = tasks.map((task) => task.toJson()).toList();
-    // await PreferenceManger().setString(
-    //   StorageKey.tasks,
-    //   jsonEncode(updateTasks),
-    // );
-    await FileStorageManger().saveTasks(updateTasks);
+    if (index == -1) return;
 
+    tasks[index].isDone = value ?? false;
+    await HiveStorageManger().saveTasks(tasks);
     _loadData();
     _calculatePercentage();
     notifyListeners();
@@ -77,15 +51,9 @@ class TasksController extends ChangeNotifier {
     if (id == null) return;
 
     tasks.removeWhere((task) => task.id == id);
+    await HiveStorageManger().saveTasks(tasks);
     _loadData();
     _calculatePercentage();
-    final updatedTasks = tasks.map((task) => task.toJson()).toList();
-    // await PreferenceManger().setString(
-    //   StorageKey.tasks,
-    //   jsonEncode(updatedTasks),
-    // );
-    FileStorageManger().saveTasks(updatedTasks);
-
     notifyListeners();
   }
 
@@ -93,7 +61,6 @@ class TasksController extends ChangeNotifier {
     totalTasks = tasks.length;
     totalDoneTasks = tasks.where((task) => task.isDone).length;
     percentage = totalTasks == 0 ? 0 : totalDoneTasks / totalTasks;
-    notifyListeners();
   }
 
   void clearTasks() {
