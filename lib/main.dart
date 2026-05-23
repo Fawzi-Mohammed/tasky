@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/hive_storage_manger.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manager.dart';
+import 'package:tasky_app/core/services/preference_manager.dart';
 import 'package:tasky_app/core/theme/dark_theme.dart';
 import 'package:tasky_app/core/theme/light_theme.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
@@ -13,11 +13,11 @@ import 'package:tasky_app/features/welcome/welcome_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PreferenceManger().init();
+  await PreferenceManager().init();
   await ScreenUtil.ensureScreenSize();
   ThemeController().init();
-  await HiveStorageManger().init();
-  final username = PreferenceManger().getString(StorageKey.userName);
+  await HiveStorageManager().init();
+  final username = PreferenceManager().getString(StorageKey.userName);
   runApp(MyApp(username: username));
 }
 

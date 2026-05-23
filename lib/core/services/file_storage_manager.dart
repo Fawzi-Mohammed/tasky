@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:path_provider/path_provider.dart';
 
-class FileStorageManger {
-  static final FileStorageManger _instance = FileStorageManger._();
-  FileStorageManger._();
+class FileStorageManager {
+  static final FileStorageManager _instance = FileStorageManager._();
+  FileStorageManager._();
   late final Directory _appDirectory;
   late final File _tasksFile;
-  factory FileStorageManger() {
+  factory FileStorageManager() {
     return _instance;
   }
   Future<void> int() async {

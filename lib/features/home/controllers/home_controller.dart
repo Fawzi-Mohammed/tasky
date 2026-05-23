@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/preference_manager.dart';
 
 class HomeController with ChangeNotifier {
   String? userName = 'Guest';
@@ -12,8 +12,8 @@ class HomeController with ChangeNotifier {
   }
 
   void loadUserData() async {
-    userName = PreferenceManger().getString(StorageKey.userName);
-    userImagePath = PreferenceManger().getString(StorageKey.userImage);
+    userName = PreferenceManager().getString(StorageKey.userName);
+    userImagePath = PreferenceManager().getString(StorageKey.userImage);
     notifyListeners();
   }
 }

@@ -1,11 +1,11 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
-class PreferenceManger {
-  static final PreferenceManger _instance = PreferenceManger._internal();
-  factory PreferenceManger() {
+class PreferenceManager {
+  static final PreferenceManager _instance = PreferenceManager._internal();
+  factory PreferenceManager() {
     return _instance;
   }
-  PreferenceManger._internal();
+  PreferenceManager._internal();
   late final SharedPreferences _sharedPreferences;
 
   Future<void> init() async {

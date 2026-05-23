@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/models/task_model.dart';
-import 'package:tasky_app/core/services/hive_storage_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manager.dart';
 
 class AddTaskController extends ChangeNotifier {
   final TextEditingController taskNameController = TextEditingController();
@@ -13,7 +13,7 @@ class AddTaskController extends ChangeNotifier {
   bool isHighPriority = true;
   void addTask(BuildContext context) async {
     if (addNewTaskFormKey.currentState?.validate() ?? false) {
-      List<TaskModel> listTasks = HiveStorageManger().loadTasks();
+      List<TaskModel> listTasks = HiveStorageManager().loadTasks();
 
       listTasks.add(
         TaskModel(
@@ -23,7 +23,7 @@ class AddTaskController extends ChangeNotifier {
           isHighPriority: isHighPriority,
         ),
       );
-      await HiveStorageManger().saveTasks(listTasks);
+      await HiveStorageManager().saveTasks(listTasks);
       if (!context.mounted) return;
       Navigator.pop(context, true);
     }

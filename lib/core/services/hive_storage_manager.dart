@@ -2,12 +2,12 @@ import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:tasky_app/core/constants/constants.dart';
 import 'package:tasky_app/core/models/task_model.dart';
 
-class HiveStorageManger {
-  static final HiveStorageManger _instance = HiveStorageManger._();
-  HiveStorageManger._();
+class HiveStorageManager {
+  static final HiveStorageManager _instance = HiveStorageManager._();
+  HiveStorageManager._();
   late Box<TaskModel> _tasksBox;
 
-  factory HiveStorageManger() {
+  factory HiveStorageManager() {
     return _instance;
   }
 

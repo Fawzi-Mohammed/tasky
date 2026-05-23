@@ -6,8 +6,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/hive_storage_manger.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manager.dart';
+import 'package:tasky_app/core/services/preference_manager.dart';
 import 'package:tasky_app/core/theme/theme_controller.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
 import 'package:tasky_app/features/profile/user_details_screen.dart';
@@ -172,9 +172,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Divider(),
                 ListTile(
                   onTap: () async {
-                    await PreferenceManger().remove(StorageKey.userName);
-                    await PreferenceManger().remove(StorageKey.motivationQuote);
-                    await HiveStorageManger().clear();
+                    await PreferenceManager().remove(StorageKey.userName);
+                    await PreferenceManager().remove(
+                      StorageKey.motivationQuote,
+                    );
+                    await HiveStorageManager().clear();
                     if (!context.mounted) return;
                     context.read<TasksController>().clearTasks();
                     Navigator.pushAndRemoveUntil(
@@ -204,11 +206,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _loadData() async {
     setState(() {
-      userName = PreferenceManger().getString(StorageKey.userName) ?? '';
+      userName = PreferenceManager().getString(StorageKey.userName) ?? '';
       motivationQuote =
-          PreferenceManger().getString(StorageKey.motivationQuote) ??
+          PreferenceManager().getString(StorageKey.motivationQuote) ??
           'One task at a time. One step closer.';
-      userImagePath = PreferenceManger().getString(StorageKey.userImage);
+      userImagePath = PreferenceManager().getString(StorageKey.userImage);
       isLoading = false;
     });
   }
@@ -282,6 +284,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void _saveImage(XFile file) async {
     final appDir = await getApplicationDocumentsDirectory();
     final newFile = await File(file.path).copy('${appDir.path}/${file.name}');
-    PreferenceManger().setString(StorageKey.userImage, newFile.path);
+    PreferenceManager().setString(StorageKey.userImage, newFile.path);
   }
 }

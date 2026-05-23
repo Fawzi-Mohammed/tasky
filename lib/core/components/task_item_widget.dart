@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/enums/task_item_actions_enum.dart';
 import 'package:tasky_app/core/models/task_model.dart';
-import 'package:tasky_app/core/services/hive_storage_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manager.dart';
 import 'package:tasky_app/core/widgets/custom_check_box.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 
@@ -186,7 +186,7 @@ class TaskItemWidget extends StatelessWidget {
                         icon: Icon(Icons.edit),
                         onPressed: () async {
                           if (formKey.currentState?.validate() ?? false) {
-                            List<TaskModel> listTasks = HiveStorageManger()
+                            List<TaskModel> listTasks = HiveStorageManager()
                                 .loadTasks();
 
                             final TaskModel newModel = TaskModel(
@@ -204,7 +204,7 @@ class TaskItemWidget extends StatelessWidget {
                             final int index = listTasks.indexOf(item);
                             listTasks[index] = newModel;
 
-                            await HiveStorageManger().saveTasks(listTasks);
+                            await HiveStorageManager().saveTasks(listTasks);
 
                             if (!context.mounted) return;
                             Navigator.of(context).pop(true);

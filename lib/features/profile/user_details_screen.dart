@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/preference_manager.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 
 class UserDetailsScreen extends StatefulWidget {
@@ -84,11 +84,11 @@ class _UserDetailsScreenState extends State<UserDetailsScreen> {
                     onPressed: () async {
                       if (userDetailsFormKey.currentState?.validate() ??
                           false) {
-                        await PreferenceManger().setString(
+                        await PreferenceManager().setString(
                           StorageKey.userName,
                           userNameController.text.trim(),
                         );
-                        await PreferenceManger().setString(
+                        await PreferenceManager().setString(
                           StorageKey.motivationQuote,
                           motivationQuoteController.text.trim(),
                         );

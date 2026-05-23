@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/constants/app_sizes.dart';
 import 'package:tasky_app/core/constants/storage_key.dart';
-import 'package:tasky_app/core/services/preference_manger.dart';
+import 'package:tasky_app/core/services/preference_manager.dart';
 import 'package:tasky_app/core/widgets/custom_svg_picture.dart';
 import 'package:tasky_app/core/widgets/custom_text_form_field.dart';
 import 'package:tasky_app/features/navigation/main_screen.dart';
@@ -93,7 +93,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                           onPressed: () async {
                             if (_key.currentState?.validate() ?? false) {
-                              PreferenceManger().setString(
+                              PreferenceManager().setString(
                                 StorageKey.userName,
                                 nameController.value.text,
                               );

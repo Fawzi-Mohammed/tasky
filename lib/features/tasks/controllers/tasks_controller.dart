@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tasky_app/core/models/task_model.dart';
-import 'package:tasky_app/core/services/hive_storage_manger.dart';
+import 'package:tasky_app/core/services/hive_storage_manager.dart';
 
 class TasksController extends ChangeNotifier {
   List<TaskModel> tasks = [];
@@ -19,7 +19,7 @@ class TasksController extends ChangeNotifier {
   void _loadTasks() {
     isLoading = true;
 
-    tasks = HiveStorageManger().loadTasks();
+    tasks = HiveStorageManager().loadTasks();
     _loadData();
     _calculatePercentage();
     isLoading = false;
@@ -31,7 +31,7 @@ class TasksController extends ChangeNotifier {
     if (index == -1) return;
 
     tasks[index].isDone = value ?? false;
-    await HiveStorageManger().saveTasks(tasks);
+    await HiveStorageManager().saveTasks(tasks);
     _loadData();
     _calculatePercentage();
     notifyListeners();
@@ -51,7 +51,7 @@ class TasksController extends ChangeNotifier {
     if (id == null) return;
 
     tasks.removeWhere((task) => task.id == id);
-    await HiveStorageManger().saveTasks(tasks);
+    await HiveStorageManager().saveTasks(tasks);
     _loadData();
     _calculatePercentage();
     notifyListeners();
